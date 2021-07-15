@@ -16,6 +16,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!--새로 만든 서브 클래스 넣어주어야함-->
+        <activity android:name=".start_server"/>
     </application>
-
 </manifest>

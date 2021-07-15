@@ -34,8 +34,7 @@ public class MainActivity extends AppCompatActivity{
 
         // 앨범으로 이동하는 버튼
         btn_getImage = findViewById(R.id.getImage);
-
-        btn_getImage.setOnClickListener(new View.OnClickListener() {//버튼 클릭 반응
+        btn_getImage.setOnClickListener(new View.OnClickListener() {//image 버튼 클릭 반응
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_PICK);
@@ -44,10 +43,18 @@ public class MainActivity extends AppCompatActivity{
                 intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(intent, 2222);
                 cnt = 1;
-
             }
         });
 
+        //시작 버튼 클릭시 서버 실행할 페이지로 이동해 서버 결과 출력
+        btn_start = (Button) findViewById(R.id.start);
+        btn_start.setOnClickListener(new Button.OnClickListener(){//start 버튼 클릭 반응
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), start_server.class);
+                startActivity(intent);
+            }
+        });
         recyclerView = findViewById(R.id.recyclerView);
     }
 
@@ -56,7 +63,6 @@ public class MainActivity extends AppCompatActivity{
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(cnt==1){
-            btn_start = findViewById(R.id.start);
             btn_start.setEnabled(true);
             btn_getImage.setEnabled(false);
 
