@@ -23,15 +23,19 @@ public class MainActivity extends AppCompatActivity{
 
     RecyclerView recyclerView;  // 이미지를 보여줄 리사이클러뷰
     MultiImageAdapter adapter;  // 리사이클러뷰에 적용시킬 어댑터
+    Button btn_getImage;
+    Button btn_start;
 
+    int cnt = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_multi_image);
 
         // 앨범으로 이동하는 버튼
-        Button btn_getImage = findViewById(R.id.getImage);
-        btn_getImage.setOnClickListener(new View.OnClickListener() {
+        btn_getImage = findViewById(R.id.getImage);
+
+        btn_getImage.setOnClickListener(new View.OnClickListener() {//버튼 클릭 반응
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_PICK);
@@ -39,6 +43,8 @@ public class MainActivity extends AppCompatActivity{
                 intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
                 intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(intent, 2222);
+                cnt = 1;
+
             }
         });
 
@@ -49,7 +55,12 @@ public class MainActivity extends AppCompatActivity{
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if(cnt==1){
+            btn_start = findViewById(R.id.start);
+            btn_start.setEnabled(true);
+            btn_getImage.setEnabled(false);
 
+        }
         if(data == null){   // 어떤 이미지도 선택하지 않은 경우
             Toast.makeText(getApplicationContext(), "이미지를 선택하지 않았습니다.", Toast.LENGTH_LONG).show();
         }
@@ -68,7 +79,7 @@ public class MainActivity extends AppCompatActivity{
             else{      // 이미지를 여러장 선택한 경우
                 ClipData clipData = data.getClipData();
                 Log.e("clipData", String.valueOf(clipData.getItemCount()));
-                // 선택한 이미지가 1장 이상 10장 이하인 경우
+
                 Log.e(TAG, "multiple choice");
 
                 for (int i = 0; i < clipData.getItemCount(); i++){
@@ -86,7 +97,6 @@ public class MainActivity extends AppCompatActivity{
                 recyclerView.setAdapter(adapter);// 리사이클러뷰에 어댑터 세팅
                 recyclerView.addItemDecoration(new RecyclerViewDecoration(20));
                 recyclerView.setLayoutManager(new GridLayoutManager(this, count));
-
 
             }
         }

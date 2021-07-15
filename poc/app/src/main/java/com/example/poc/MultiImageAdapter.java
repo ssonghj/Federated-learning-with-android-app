@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
+//리사이클러뷰 어댑터 클래스
 public class MultiImageAdapter extends RecyclerView.Adapter<MultiImageAdapter.ViewHolder>{
     private ArrayList<Uri> mData = null ;
     private Context mContext = null ;

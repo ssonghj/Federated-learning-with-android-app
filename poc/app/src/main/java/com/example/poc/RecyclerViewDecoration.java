@@ -2,10 +2,10 @@ package com.example.poc;
 
 import android.graphics.Rect;
 import android.view.View;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+//리사이클러뷰 이미지 상하간격 조절 클래스
 public class RecyclerViewDecoration extends RecyclerView.ItemDecoration {
 
     private final int divHeight;
