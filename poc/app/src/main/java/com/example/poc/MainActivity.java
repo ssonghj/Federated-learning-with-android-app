@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity{
             Toast.makeText(getApplicationContext(), "이미지를 선택하지 않았습니다.", Toast.LENGTH_LONG).show();
         }
         else{   // 이미지를 하나라도 선택한 경우
-            int count = 3;
+            int count = 1;
             if(data.getClipData() == null){     // 이미지를 하나만 선택한 경우
                 Log.e("single choice: ", String.valueOf(data.getData()));
                 Uri imageUri = data.getData();
