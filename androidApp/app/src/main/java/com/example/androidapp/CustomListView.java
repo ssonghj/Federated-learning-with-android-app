@@ -89,8 +89,8 @@ public class CustomListView extends BaseAdapter {
                 int position2 = holder.caption.getId();
                 EditText Caption = (EditText) holder.caption;
                 if(Caption.getText().toString().length()>0){
-                    System.out.println(position2);
-                    System.out.println(Caption.getText());
+//                    System.out.println(position2);
+//                    System.out.println(Caption.getText());
                     list.set(position2,Caption.getText().toString());
                 }else{
                     Toast.makeText(context, "Please enter some value", Toast.LENGTH_SHORT).show();
