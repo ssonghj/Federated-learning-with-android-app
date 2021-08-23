@@ -4,20 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.widget.Button;
 import android.widget.ListView;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.Toast;
 
@@ -30,21 +23,17 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     private File file;
     ListView listView;
-
     private List str_list;
     int noComplete = 0;
-    int ready = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MODE_PRIVATE);
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, MODE_PRIVATE);
-        
 
         String rootSD = Environment.getExternalStorageDirectory().toString() + "/Download/ani";
-
-        //String rootSD = Environment.getExternalStorageDirectory().toString();
         file = new File( rootSD) ;
         File list[] = file.listFiles();
 
