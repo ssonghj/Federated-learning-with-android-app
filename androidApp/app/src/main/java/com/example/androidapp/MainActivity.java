@@ -5,6 +5,7 @@ import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -31,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
     ListView listView;
 
     private List str_list;
+    int noComplete = 0;
+    int ready = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +71,9 @@ public class MainActivity extends AppCompatActivity {
         ListAdapter oAdapter = new CustomListView(this, listViewData,str_list);
         listView.setAdapter(oAdapter);
 
+        for(int i = 0; i<str_list.size();i++){
+            System.out.println(str_list.get(i));
+        }
 //        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 //            @Override
 //            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -75,6 +81,39 @@ public class MainActivity extends AppCompatActivity {
 //                Log.d("확인","name : "+clickName);
 //            }
 //        });
-    }
 
+        Button tagBtn = (Button) findViewById(R.id.tagBtn);
+        Button strBtn = (Button) findViewById(R.id.strBtn);
+        strBtn.setEnabled(false);
+
+        tagBtn.setOnClickListener(new View.OnClickListener(){
+            Context context = getApplicationContext();
+            @Override
+            public void onClick(View v){
+                for(int i = 0; i<str_list.size();i++){
+                    System.out.println(str_list.get(i));
+                    if(str_list.get(i).toString() == ""){
+                        noComplete = 1;
+                    }
+                }
+                if(noComplete == 1){
+                    Toast.makeText(context, "태그를 모두 입력해주세요", Toast.LENGTH_LONG).show();
+                    noComplete = 0;
+                }
+                else{
+                    //태그 입력 완료
+                    strBtn.setEnabled(true);
+                }
+            }
+        });
+
+
+        strBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+
+            }
+        });
+
+    }
 }
