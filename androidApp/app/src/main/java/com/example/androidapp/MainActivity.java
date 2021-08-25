@@ -8,6 +8,8 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.view.View;
@@ -25,11 +27,15 @@ public class MainActivity extends AppCompatActivity {
     ListView listView;
     private List str_list;
     int noComplete = 0;
+    //데이터 만들기
+//    List<String> items = new ArrayList<>();
+    private View header;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        getSupportActionBar().setTitle("태그 미완료 이미지들");
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MODE_PRIVATE);
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, MODE_PRIVATE);
 
@@ -55,21 +61,12 @@ public class MainActivity extends AppCompatActivity {
         str_list = new ArrayList<String>();
         for(int i=0;i<list.length;i++){
             str_list.add("");
+
         }
 
         ListAdapter oAdapter = new CustomListView(this, listViewData,str_list);
         listView.setAdapter(oAdapter);
 
-        for(int i = 0; i<str_list.size();i++){
-            System.out.println(str_list.get(i));
-        }
-//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                String clickName = listViewData.get(position).title;
-//                Log.d("확인","name : "+clickName);
-//            }
-//        });
 
         Button tagBtn = (Button) findViewById(R.id.tagBtn);
         Button strBtn = (Button) findViewById(R.id.strBtn);
@@ -92,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
                 else{
                     //태그 입력 완료
                     strBtn.setEnabled(true);
+                    //str_list에 입력 완료
                 }
             }
         });
@@ -103,6 +101,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
     }
+
 }

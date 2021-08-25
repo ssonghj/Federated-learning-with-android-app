@@ -22,14 +22,14 @@
         android:layout_gravity="center">
     </TextView>
 
-    <EditText
-        android:id="@+id/EditText"
+    <AutoCompleteTextView
+        android:id="@+id/AutoText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:ems="10"
         android:inputType="text"
         android:hint="태그를 입력하세요"
+        android:completionThreshold="0"
+        android:imeOptions="actionNext"
         android:layout_gravity="center"/>
 
 </LinearLayout>

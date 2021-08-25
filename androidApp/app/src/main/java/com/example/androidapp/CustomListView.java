@@ -10,6 +10,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -27,7 +29,6 @@ public class CustomListView extends BaseAdapter {
 
     private Context context;
     private List list;
-
 
     public CustomListView(Context context, ArrayList<ListData> listData, List str_list)
     {
@@ -62,14 +63,22 @@ public class CustomListView extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         final ViewHolder holder;
+
+        String [] items = { "고양이", "강아지"};
+
         convertView=null;
         if (convertView == null) {
             holder = new ViewHolder();
             layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = layoutInflater.inflate(R.layout.custom_listview, parent, false);
-            holder.caption = (EditText) convertView.findViewById(R.id.EditText);
-            holder.caption.setTag(position);
-            holder.caption.setText(list.get(position).toString());
+            holder.textView = convertView.findViewById(R.id.AutoText);
+
+            AutoCompleteTextView auto = convertView.findViewById(R.id.AutoText);
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_dropdown_item_1line, items);
+            auto.setAdapter(adapter);
+
+            holder.textView.setTag(position);
+            holder.textView.setText(list.get(position).toString());
             convertView.setTag(holder);
             System.out.println("초기화면 등장!");
         }
@@ -78,16 +87,16 @@ public class CustomListView extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        int tag_position=(Integer) holder.caption.getTag();
-        holder.caption.setId(tag_position);
+        int tag_position=(Integer) holder.textView.getTag();
+        holder.textView.setId(tag_position);
 
-        holder.caption.addTextChangedListener(new TextWatcher() {
+        holder.textView.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before,
                                       int count) {
                 System.out.println("태그화면 등장!");
-                int position2 = holder.caption.getId();
-                EditText Caption = (EditText) holder.caption;
+                int position2 = holder.textView.getId();
+                TextView Caption = holder.textView;
                 if(Caption.getText().toString().length()>0){
 //                    System.out.println(position2);
 //                    System.out.println(Caption.getText());
@@ -121,7 +130,7 @@ public class CustomListView extends BaseAdapter {
     }
 }
 class ViewHolder {
-    EditText caption;
+    TextView textView;
 }
 class ListData {
     public String title = "";
