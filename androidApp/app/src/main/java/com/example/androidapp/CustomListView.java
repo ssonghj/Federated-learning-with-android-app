@@ -119,9 +119,9 @@ public class CustomListView extends BaseAdapter {
                 return true;
             }});
 
-
         ImageView mainImage = convertView.findViewById(R.id.mainImage);
         TextView title = convertView.findViewById(R.id.title);
+
 
         mainImage.setImageURI(listViewData.get(position).mainImage);
         title.setText(listViewData.get(position).title);

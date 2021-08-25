@@ -33,7 +33,7 @@
                     android:layout_height="wrap_content"></Space>
 
                 <Button
-                    android:id="@+id/strBtn"
+                    android:id="@+id/completeBtn"
                     android:layout_width="180dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
