@@ -4,12 +4,15 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,6 +21,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class CompleteTag extends AppCompatActivity {
+    SharedPreferences mmPref;
     ListView listView;
     private List str_list;
     ArrayList<ListData> listViewData = new ArrayList<>();
@@ -84,6 +88,19 @@ public class CompleteTag extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    //완료 해쉬맵 sharedPreperence에 저장
+    public void SaveCompleteTagMap(Context context, HashMap<Uri, String> ctMap) {
+        mmPref = context.getSharedPreferences("pref", Context.MODE_PRIVATE);
+        if (mmPref != null) {
+            JSONObject jsonObject = new JSONObject(ctMap);
+            String jsonString = jsonObject.toString();
+            SharedPreferences.Editor editor = mmPref.edit();
+            editor.remove("hashMapName").commit();
+            editor.putString("hashMapName", jsonString);
+            editor.commit();
+        }
     }
 
 }

@@ -10,15 +10,19 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.view.View;
-import android.widget.ListAdapter;
 import android.widget.Toast;
 
 import org.json.JSONObject;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 import java.io.File;
@@ -39,9 +43,10 @@ public class MainActivity extends AppCompatActivity {
     //태그 미완료 해쉬맵 - 순서 보장
     ConcurrentHashMap<Uri, String> notTagMap = new ConcurrentHashMap<>();
     //태그 완료 해쉬맵
-    HashMap<Uri, String> completeTagMap = new HashMap<>();
+    HashMap<Uri, String> completeTagMap = new LinkedHashMap<>();
     //전체 파일 넣을 해쉬맵 -> 써야할 이유가 있나?
     ConcurrentHashMap<Uri, String> totalMap = new ConcurrentHashMap<>();
+    int cnt = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +55,18 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("태그 미완료 이미지들");
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MODE_PRIVATE);
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, MODE_PRIVATE);
+
+        if(cnt == 0){
+            try {
+                LoadCompleteTagMap();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+            cnt++;
+        }
+
 
         //이전 화면에서 값 가져오기
         Intent secondIntent = getIntent();
@@ -136,6 +153,18 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(context, "태그 입력이 저장되었습니다.", Toast.LENGTH_LONG).show();
                 //기존 리스트에서 태그 완료된 이미지 리스트로 옮기고 기존 리스트에서 삭제 후 리스트 뷰 갱신
 
+
+
+
+
+                //sharedPreference에 저장
+                try {
+                    SaveCompleteTagMap(completeTagMap);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
                 //shared preferences에 저장
                 Iterator<Map.Entry<Uri, String>> entries = notTagMap.entrySet().iterator();
                 while(entries.hasNext()){
@@ -180,38 +209,34 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-    //sharedPreperence hashMap에 저장
-    public void SaveUrlMap(Context context, HashMap<Uri, String> hashMapData) {
-        mmPref = context.getSharedPreferences("pref", Context.MODE_PRIVATE);
-        if (mmPref != null) {
-            JSONObject jsonObject = new JSONObject(hashMapData);
-            String jsonString = jsonObject.toString();
-            SharedPreferences.Editor editor = mmPref.edit();
-            editor.remove("hashMapName").commit();
-            editor.putString("hashMapName", jsonString);
-            editor.commit();
-        }
-    }
-    // HashMap 불러오기  <경로, 태그>
-    public HashMap<Uri, String> LoadUrlMap(Context context) {
-        HashMap<Uri, String> outputMap = new LinkedHashMap<>();//순서 보장 해시맵
-        mmPref = context.getSharedPreferences("pref", Context.MODE_PRIVATE);
-        try {
-            if (mmPref != null) {
-                String jsonString = mmPref.getString("hashMapName", (new JSONObject()).toString());
-                JSONObject jsonObject = new JSONObject(jsonString);
+    //완료 해쉬맵 sharedPreperence에 저장
+    public void SaveCompleteTagMap(HashMap<Uri, String> ctMap) throws IOException {
+        //file.delete();
 
-                Iterator<String> keysItr = jsonObject.keys();
-                while (keysItr.hasNext()) {
-                    String key = keysItr.next();
-                    String value = (String) jsonObject.get(key);
-                    outputMap.put(Uri.fromFile(new File(key)), value);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        FileOutputStream fileStream = new FileOutputStream("/storage/emulated/0/Download/save.json");
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileStream);
+        objectOutputStream.writeObject(ctMap);
+        objectOutputStream.close();
+    }
+
+    //완료 HashMap 불러오기  <경로, 태그>
+    public void LoadCompleteTagMap() throws IOException, ClassNotFoundException {
+
+        FileInputStream fileStream = new FileInputStream("/storage/emulated/0/Download/save.json");
+        ObjectInputStream objectInputStream = new ObjectInputStream(fileStream);
+        Object object = objectInputStream.readObject();
+        objectInputStream.close();
+        System.out.println("읽어온 객체의 type->"+ object.getClass());
+
+        HashMap hashMap = (HashMap)object;
+
+        Iterator<String> it = hashMap.keySet().iterator();
+        while(it.hasNext()){  // 맵키가 존재할경우
+            String key = it.next();  // 맵키를 꺼냄
+            String value   =  (String)hashMap.get(key);  // 키에 해당되는 객체 꺼냄
+            System.out.println(key + "->" + value);
+            completeTagMap.put(Uri.fromFile(new File(key)),value);
         }
-        return outputMap;
     }
 
 }
