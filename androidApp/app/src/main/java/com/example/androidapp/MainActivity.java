@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
             Uri file = Uri.fromFile(list[i]);
             //불러온 파일의 태그값이 완료맵에 없으면 태그 미완료 해쉬맵에 저장하고 있으면 태그완료 해쉬맵에 저장
             for(Map.Entry<Uri, String> elem : completeTagMap.entrySet()){
-                System.out.println("키 : " + elem.getKey() + " 값 : " + elem.getValue());
+                //System.out.println("키 : " + elem.getKey() + " 값 : " + elem.getValue());
                 //불러온 키값이 list[i]에 없으면 미완료 해쉬에 넣기
                 if( (elem.getKey() != file) ){
                     notTagMap.put(file,"");
@@ -83,7 +83,6 @@ public class MainActivity extends AppCompatActivity {
             }
             //불러온 키값이 완료맵에 없으면 새로 들어온 이미지 이므로 미완료 해쉬맵에 넣어야함
             if(!completeTagMap.containsKey(file)){
-                System.out.println("키 있는지 없는지 확인 : "+file);
                 notTagMap.put(file,"");
             }
             //불러온 키 값이 완료맵에 있었으면 미완료 해쉬맵에서 지우기

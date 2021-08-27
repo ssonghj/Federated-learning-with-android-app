@@ -109,11 +109,9 @@ public class CustomListView extends BaseAdapter {
                     list.set(position2,Caption.getText().toString());
 
                     map.put(listViewData.get(position2).mainImage, Caption.getText().toString());
-                    System.out.println("!?!??!?!?!?!11111111111111?!?!");
                     for(Map.Entry<Uri, String> entry : map.entrySet()) {
                         System.out.println("map키 : "+ entry.getKey()+" 값 : "+ entry.getValue());
                     }
-                    System.out.println("!?!??!?!?!?!?!222222222222?!");
                 }else{
                     Toast.makeText(context, "Please enter some value", Toast.LENGTH_SHORT).show();
                 }

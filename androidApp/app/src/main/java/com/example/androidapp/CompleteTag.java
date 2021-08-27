@@ -2,12 +2,14 @@ package com.example.androidapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -72,9 +74,14 @@ public class CompleteTag extends AppCompatActivity {
         });
         //태그 수정하는 버튼
         modifyBtn.setOnClickListener(new View.OnClickListener(){
+            Context context = getApplicationContext();
             @Override
             public void onClick(View v){
-
+                Toast.makeText(context, "태그가 수정되었습니다.", Toast.LENGTH_LONG).show();
+                System.out.println("---------------수정 완료 해쉬맵-----------------");
+                for(Map.Entry<Uri,String> entry : completeTagMap.entrySet()) {
+                    System.out.println("키 : "+ entry.getKey()+" 값 : "+ entry.getValue());
+                }
             }
         });
     }
