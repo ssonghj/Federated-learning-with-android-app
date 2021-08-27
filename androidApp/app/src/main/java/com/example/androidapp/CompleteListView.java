@@ -20,26 +20,25 @@ import androidx.annotation.RequiresApi;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class CustomListView extends BaseAdapter {
+public class CompleteListView extends BaseAdapter {
     LayoutInflater layoutInflater = null;
     private ArrayList<ListData> listViewData = null;
     private int count = 0;
 
     private Context context;
     private List list;
-    private ConcurrentHashMap<Uri, String> map;
-    public CustomListView(Context context, ArrayList<ListData> listData, List str_list, ConcurrentHashMap notTagMap)
+    private HashMap map;
+    public CompleteListView(Context context, ArrayList<ListData> listData, List str_list, HashMap completeTagMap)
     {
         this.context = context;
         listViewData = listData;
         count = listViewData.size();
         list  = str_list;
-        map = notTagMap;
+        map = completeTagMap;
     }
 
     //아이템 개수 반환 함수
@@ -66,13 +65,13 @@ public class CustomListView extends BaseAdapter {
     // Adapter.getView() 해당위치 뷰 반환 함수
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        final ViewHolder holder;
+        final newViewHolder holder;
 
         String [] items = { "고양이", "강아지"};
 
         convertView=null;
         if (convertView == null) {
-            holder = new ViewHolder();
+            holder = new newViewHolder();
             layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = layoutInflater.inflate(R.layout.custom_listview, parent, false);
             holder.textView = convertView.findViewById(R.id.AutoText);
@@ -89,7 +88,7 @@ public class CustomListView extends BaseAdapter {
         }
         else{
             System.out.println("두번째 화면  등장!");
-            holder = (ViewHolder) convertView.getTag();
+            holder = (newViewHolder) convertView.getTag();
         }
 
         int tag_position=(Integer) holder.textView.getTag();
@@ -110,9 +109,9 @@ public class CustomListView extends BaseAdapter {
 
                     map.put(listViewData.get(position2).mainImage, Caption.getText().toString());
                     System.out.println("!?!??!?!?!?!11111111111111?!?!");
-                    for(Map.Entry<Uri, String> entry : map.entrySet()) {
-                        System.out.println("map키 : "+ entry.getKey()+" 값 : "+ entry.getValue());
-                    }
+//                    for(Map.Entry<Uri, String> entry : map.entrySet()) {
+//                        System.out.println("map키 : "+ entry.getKey()+" 값 : "+ entry.getValue());
+//                    }
                     System.out.println("!?!??!?!?!?!?!222222222222?!");
                 }else{
                     Toast.makeText(context, "Please enter some value", Toast.LENGTH_SHORT).show();
@@ -142,11 +141,10 @@ public class CustomListView extends BaseAdapter {
         return convertView;
     }
 }
-class ViewHolder {
+class newViewHolder {
     TextView textView;
 }
-class ListData {
+class newListData {
     public String title = "";
     public Uri mainImage;
-
 }
