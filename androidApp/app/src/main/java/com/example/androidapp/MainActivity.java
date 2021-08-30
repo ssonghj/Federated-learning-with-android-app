@@ -6,6 +6,8 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -41,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getSupportActionBar().setTitle("태그 미완료 이미지들");
+
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MODE_PRIVATE);
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, MODE_PRIVATE);
 
@@ -108,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
             ListData listData = new ListData();
             //태그 입력 안된 이미지들만 넣기
             listData.mainImage = entry.getKey();
-            listData.title = "태그 입력 : ";
+
             listViewData.add(listData);
         }
 
@@ -159,7 +161,6 @@ public class MainActivity extends AppCompatActivity {
                     ListData listData = new ListData();
                     //태그 입력 안된 이미지들만 넣기
                     listData.mainImage = entry.getKey();
-                    listData.title = "태그 입력 : ";
                     listViewData.add(listData);
                 }
                 List str_list = new ArrayList<String>();

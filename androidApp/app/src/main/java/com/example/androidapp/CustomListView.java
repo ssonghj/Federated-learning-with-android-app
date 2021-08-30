@@ -131,11 +131,8 @@ public class CustomListView extends BaseAdapter {
             }});
 
         ImageView mainImage = convertView.findViewById(R.id.mainImage);
-        TextView title = convertView.findViewById(R.id.title);
-
 
         mainImage.setImageURI(listViewData.get(position).mainImage);
-        title.setText(listViewData.get(position).title);
 
         return convertView;
     }
@@ -144,7 +141,5 @@ class ViewHolder {
     TextView textView;
 }
 class ListData {
-    public String title = "";
     public Uri mainImage;
-
 }

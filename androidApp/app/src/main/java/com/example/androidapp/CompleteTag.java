@@ -33,19 +33,17 @@ public class CompleteTag extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.complete_tag);
-        getSupportActionBar().setTitle("태그 완료 이미지들");
 
         Intent secondIntent = getIntent();
         completeTagMap = (HashMap<Uri, String>) secondIntent.getSerializableExtra("completeTagMap");
 
         //리스트 뷰 가져오기
-        listView = findViewById(R.id.completeListview);
+        listView = findViewById(R.id.listview);
         //태그 미완료된 해쉬만 넣음
         for(Map.Entry<Uri,String> entry : completeTagMap.entrySet()) {
             ListData listData = new ListData();
             //태그 입력 안된 이미지들만 넣기
             listData.mainImage = entry.getKey();
-            listData.title = "태그 입력 : ";
             listViewData.add(listData);
         }
 

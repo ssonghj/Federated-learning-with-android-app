@@ -132,19 +132,11 @@ public class CompleteListView extends BaseAdapter {
             }});
 
         ImageView mainImage = convertView.findViewById(R.id.mainImage);
-        TextView title = convertView.findViewById(R.id.title);
-
-
         mainImage.setImageURI(listViewData.get(position).mainImage);
-        title.setText(listViewData.get(position).title);
 
         return convertView;
     }
 }
 class newViewHolder {
     TextView textView;
-}
-class newListData {
-    public String title = "";
-    public Uri mainImage;
 }
