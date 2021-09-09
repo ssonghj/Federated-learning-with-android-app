@@ -6,8 +6,6 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -70,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
         //저장소에서 파일 불러오기
         String rootSD = Environment.getExternalStorageDirectory().toString() + "/Download/ani";
         file = new File(rootSD);
+        //System.out.println(rootSD);
         //파일 저장 리스트
         File list[] = file.listFiles();
         //데이터 로드 후 파일 이름 출력
@@ -91,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
                 notTagMap.remove(file);
             }
         }
+
         //-----------------------------------------------------------------------------------
         System.out.println("---------------미완료 해쉬맵-----------------");
         for(Map.Entry<Uri,String> entry : notTagMap.entrySet()) {
@@ -108,9 +108,7 @@ public class MainActivity extends AppCompatActivity {
         //태그 미완료된 해쉬만 넣음
         for(Map.Entry<Uri,String> entry : notTagMap.entrySet()) {
             ListData listData = new ListData();
-            //태그 입력 안된 이미지들만 넣기
             listData.mainImage = entry.getKey();
-
             listViewData.add(listData);
         }
 
@@ -168,7 +166,7 @@ public class MainActivity extends AppCompatActivity {
                     str_list.add("");
                 }
 
-                //아예 어댑터 만들어서 새로 넣어줌
+                //새로 어댑터 만들어서 넣어줌
                 CustomListView adapter = new CustomListView(context, listViewData,str_list,notTagMap);
                 listView.setAdapter(adapter);
             }

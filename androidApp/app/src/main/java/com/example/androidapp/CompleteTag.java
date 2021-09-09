@@ -2,7 +2,9 @@ package com.example.androidapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -24,15 +26,23 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class CompleteTag extends AppCompatActivity {
+    int flag = 0;
     SharedPreferences mmPref;
     ListView listView;
     private List str_list;
     ArrayList<ListData> listViewData = new ArrayList<>();
     HashMap<Uri,String> completeTagMap;
+    Button modifyBtn;
+    Button notCompleteTagBtn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.complete_tag);
+        //버튼 선언
+        notCompleteTagBtn = (Button) findViewById(R.id.notCompleteTagBtn);
+        modifyBtn = (Button) findViewById(R.id.modifyBtn);
 
         Intent secondIntent = getIntent();
         completeTagMap = (HashMap<Uri, String>) secondIntent.getSerializableExtra("completeTagMap");
@@ -57,9 +67,7 @@ public class CompleteTag extends AppCompatActivity {
         CompleteListView oAdapter = new CompleteListView(this, listViewData,str_list, completeTagMap);
         listView.setAdapter(oAdapter);
 
-        //버튼 선언
-        Button notCompleteTagBtn = (Button) findViewById(R.id.notCompleteTagBtn);
-        Button modifyBtn = (Button) findViewById(R.id.modifyBtn);
+
         //미완료된 이미지 보는 버튼
         notCompleteTagBtn.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -71,14 +79,23 @@ public class CompleteTag extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        //태그 수정하는 버튼
+
+
+        //학습하기버튼
         modifyBtn.setOnClickListener(new View.OnClickListener(){
             Context context = getApplicationContext();
             @Override
             public void onClick(View v){
-                Toast.makeText(context, "태그가 수정되었습니다.", Toast.LENGTH_LONG).show();
+//                Toast.makeText(context, "태그가 수정되었습니다.", Toast.LENGTH_LONG).show();
                 try {
-                    SaveCompleteTagMap(context, completeTagMap);
+                    if(modifyBtn.getText().equals("학습하기")){
+                        SaveCompleteTagMap(context, completeTagMap);
+                        showSelectModelDialog();
+                    }
+                    else if(modifyBtn.getText().equals("식별하기")){
+                        Intent intent = new Intent(getApplicationContext(), Classification.class);
+                        startActivity(intent);
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (JSONException e) {
@@ -115,6 +132,61 @@ public class CompleteTag extends AppCompatActivity {
             editor.putString("jsonValue",null);
             editor.apply();
         }
+    }
+
+
+    //모델 선택 다이얼로그
+    void showSelectModelDialog()
+    {
+        //리스트 아이템 담을 리스트
+        final List<String> ListItems = new ArrayList<>();
+        ListItems.add("Inception v4");
+        ListItems.add("ResNet");
+        final CharSequence[] items =  ListItems.toArray(new String[ ListItems.size()]);
+
+        final List SelectedItems  = new ArrayList();
+        int defaultItem = 0;
+        SelectedItems.add(defaultItem);
+
+        //경고창 만들기
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        //타이틀 만들기
+        builder.setTitle("모델 선택");
+        builder.setSingleChoiceItems(items, defaultItem,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        SelectedItems.clear();
+                        SelectedItems.add(which);
+                    }
+                });
+        //다이얼로그 내의 ok 버튼
+        builder.setPositiveButton("Ok",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        String msg="";
+
+                        if (!SelectedItems.isEmpty()) {
+                            int index = (int) SelectedItems.get(0);
+                            msg = ListItems.get(index);
+                        }
+                        Toast.makeText(getApplicationContext(),
+                                msg+"가 선택되었습니다." , Toast.LENGTH_LONG)
+                                .show();
+                        //버튼 text 바꾸기
+                        modifyBtn.setText("식별하기");
+                        //버튼 색 바꾸기
+                        //modifyBtn.setBackgroundColor(0xffD1B6E1);
+                    }
+                });
+        //다이얼로그 내의 cancel 버튼
+        builder.setNegativeButton("Cancel",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        //뒤로가기
+                    }
+                });
+        builder.show();
     }
 
 }

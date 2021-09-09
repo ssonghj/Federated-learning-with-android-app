@@ -11,7 +11,8 @@
         <entry key="app/src/main/res/drawable/linear_round.xml" value="0.33645833333333336" />
         <entry key="app/src/main/res/drawable/round.xml" value="0.3312820512820513" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.4166666666666667" />
-        <entry key="app/src/main/res/layout/complete_tag.xml" value="0.3255208333333333" />
+        <entry key="app/src/main/res/layout/classification.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/complete_tag.xml" value="0.16524216524216523" />
         <entry key="app/src/main/res/layout/custom_listview.xml" value="0.1" />
         <entry key="app/src/main/res/layout/item_suggest.xml" value="0.20516304347826086" />
         <entry key="app/src/main/res/layout/popup_listview.xml" value="0.1770516717325228" />
