@@ -1,3 +1,3 @@
-## Federated learning with flutter app
+## Federated learning with android app
 
 1. Poc 제작 진행중
