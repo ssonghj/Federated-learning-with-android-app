@@ -27,7 +27,8 @@ import java.util.Arrays;
 import java.util.concurrent.Semaphore;
 
 /**
- * Created by BRB_LAB on 2016-06-07.
+ * 카메라 설명
+ * https://myandroidarchive.tistory.com/1
  */
 public class Preview extends Thread {
     private final static String TAG = "Preview : ";
