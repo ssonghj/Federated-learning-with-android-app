@@ -1,5 +1,8 @@
 package com.example.androidapp;
 
+import static org.tensorflow.lite.DataType.FLOAT32;
+import static org.tensorflow.lite.DataType.UINT8;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
@@ -10,6 +13,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -18,6 +22,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -44,6 +49,7 @@ import org.tensorflow.lite.task.vision.classifier.ImageClassifier;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
@@ -75,6 +81,9 @@ public class CompleteTag extends AppCompatActivity {
 
     String key;
     Float value;
+
+    Uri imageUri;
+    private static final int REQUEST_CODE = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,150 +130,124 @@ public class CompleteTag extends AppCompatActivity {
             }
         });
 
-        //학습하기버튼
+
+
+        //학습하기 버튼
         modifyBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
                 Context context = getApplicationContext();
 //                Toast.makeText(context, "태그가 수정되었습니다.", Toast.LENGTH_LONG).show();
                 try {
-                    if(modifyBtn.getText().equals("학습하기")){
+                    //앨범에서 사진 선택하기
+                    if (modifyBtn.getText().equals("사진선택")){
+                        Intent intent = new Intent(Intent.ACTION_PICK);
+                        intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
+                        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                        intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        startActivityForResult(intent, 2222);
+                    }
+                    //선택한 사진으로 학습하기
+                    else if(modifyBtn.getText().equals("학습하기")){
                         SaveCompleteTagMap(context, completeTagMap);
+
 
                         //팝업 띄워서 모델 이름 받기
                         //String tfliteFile = showSelectModelDialog();
 
-                        //일단 inception으로 진행
-                        //String tfliteFile = "inception_v4.tflite";
 
-                        //inception v3 transfer learning 재학습 시켜서 모델만든 걸로 진행
-                        String tfliteFile = "model.tflite";
+                        //테스트 사진 비트맵 변환 ->resize함수 사용
+                        Bitmap bitmap = resize(context,imageUri,256);
 
-                        //딥러닝 모델 파일 가져오기
-                        AssetFileDescriptor fileDescriptor = getResources().getAssets().openFd(tfliteFile);
-                        FileInputStream inputStream = new FileInputStream(fileDescriptor.getFileDescriptor());
-                        FileChannel fileChannel = inputStream.getChannel();
-                        long startOffset = fileDescriptor.getStartOffset();
-                        long declaredLength = fileDescriptor.getDeclaredLength();
-                        MappedByteBuffer tflite_model = fileChannel.map(FileChannel.MapMode.READ_ONLY, startOffset, declaredLength);
+                        //이미지 전처리
+                        ImageProcessor imageProcessor =
+                                new ImageProcessor.Builder()
+                                        .add(new ResizeOp(224, 224, ResizeOp.ResizeMethod.BILINEAR))
+                                        .build();
+                        TensorImage tImage = new TensorImage(DataType.UINT8);
+                        tImage.load(bitmap);
 
-                        //input 배열
-                        AssetManager am = getAssets();
-                        BufferedInputStream buf;
-                        //inception v4는 1,299,299,3 , model은 224,224       // 1 1 3 height, width, channel
-                        float[][][][] input = new float[1][299][299][3];
-                        //inception v4는 1,1001 , model은 1,6
-                        float[][] output = new float[1][1001];
+                        tImage = imageProcessor.process(tImage);
 
-                        //테스트 사진
-                        String testFile = "acne.jpeg";
+                        //FLOAT32임.... NEURON APP? 확인해보면
+                        TensorBuffer probabilityBuffer =
+                                TensorBuffer.createFixedSize(new int[]{1,4}, UINT8);
 
-                        try {
-                            //테스트 사진 bitmap 변환
-                            buf = new BufferedInputStream(am.open(testFile));
-                            Bitmap bitmap = BitmapFactory.decodeStream(buf);
-                            bitmap = Bitmap.createScaledBitmap(bitmap, 1, 1, true);
+                        // Initialise the model
+                        Interpreter tflite = null;
 
-                            //이미지 전처리
-                            ImageProcessor imageProcessor =
-                                    new ImageProcessor.Builder()
-                                            .add(new ResizeOp(1, 1, ResizeOp.ResizeMethod.BILINEAR))
-                                            .build();
-                            TensorImage tImage = new TensorImage(DataType.UINT8);
-                            tImage.load(bitmap);
-                            tImage = imageProcessor.process(tImage);
+                        //tf파일 받기
+                        tflite = getTfliteInterpreter("mobileNet_v2.tflite");
 
-                            //FLOAT32임.... NEURON APP? 확인해보면
-                            TensorBuffer probabilityBuffer =
-                                    TensorBuffer.createFixedSize(new int[]{1,6}, DataType.FLOAT32);
-
-                            // Initialise the model
-                            Interpreter tflite = null;
-                            try{
-                                MappedByteBuffer tfliteModel
-                                        = FileUtil.loadMappedFile(getApplicationContext(),
-                                        "model.tflite");
-                                tflite = new Interpreter(tfliteModel);
-                            } catch (IOException e){
-                                Log.e("tfliteSupport", "Error reading model", e);
-                            }
-
-                            // Running inference
-                            if(null != tflite) {
-                                System.out.println("학습시작");
-                                tflite.run(tImage.getBuffer(), probabilityBuffer.getBuffer());
-                                System.out.println("학습 끝");
-                            }
-
-
-                            final String ASSOCIATED_AXIS_LABELS = "output_labels.txt";
-                            List associatedAxisLabels = null;
-
-                            try {
-                                associatedAxisLabels = FileUtil.loadLabels(context,ASSOCIATED_AXIS_LABELS);
-                            } catch (IOException e) {
-                                Log.e("tfliteSupport", "Error reading label file", e);
-                            }
-
-                            TensorProcessor probabilityProcessor =
-                                    new TensorProcessor.Builder().add(new NormalizeOp(0, 255)).build();
-
-                            if (null != associatedAxisLabels) {
-                                // Map of labels and their corresponding probability
-                                TensorLabel labels = new TensorLabel(associatedAxisLabels,
-                                        probabilityProcessor.process(probabilityBuffer));
-
-                                // Create a map to access the result based on label
-                                Map floatMap = labels.getMapWithFloatValue();
-
-                                //맵에 들어온 값 한번 확인해 보는 용도
-                                for(Object entry : floatMap.entrySet()) {
-                                    System.out.println("map키 : "+ entry);
-                                }
-
-                                //가장 큰값 찾기
-                                HashMap <String, Float> result = new LinkedHashMap<>();
-                                for(Object entry : floatMap.entrySet()) {
-                                    String[] s = entry.toString().split("=");
-                                    result.put(s[0], Float.parseFloat(s[1]));
-                                }
-
-                                float max = 0.0F;
-                                for(Map.Entry<String, Float> entry : result.entrySet()) {
-                                    if(entry.getValue() > max){
-                                        max = entry.getValue();
-                                    }
-                                }
-
-                                //가장 큰 값만 분류 결과 화면에 넘길 수 있도록 key, value 저장
-                                for (Map.Entry<String, Float> entry : result.entrySet()) {
-                                    if (entry.getValue().equals(max)) {
-                                        System.out.println("key : "+entry.getKey()+" value : "+entry.getValue());
-                                        key = entry.getKey();
-                                        value = entry.getValue();
-                                    }
-                                }
-
-
-                            }
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                        // Running inference
+                        if(null != tflite) {
+                            System.out.println("학습시작");
+                            tflite.run(tImage.getBuffer(), probabilityBuffer.getBuffer());
+                            System.out.println("학습 끝");
                         }
 
 
+                        final String ASSOCIATED_AXIS_LABELS = "output_labels.txt";
+                        List associatedAxisLabels = null;
+
+                        try {
+                            associatedAxisLabels = FileUtil.loadLabels(context,ASSOCIATED_AXIS_LABELS);
+                        } catch (IOException e) {
+                            Log.e("tfliteSupport", "Error reading label file", e);
+                        }
+
+                        TensorProcessor probabilityProcessor =
+                                new TensorProcessor.Builder().add(new NormalizeOp(0, 255)).build();
+
+                        if (null != associatedAxisLabels) {
+                            // Map of labels and their corresponding probability
+                            TensorLabel labels = new TensorLabel(associatedAxisLabels,
+                                    probabilityProcessor.process(probabilityBuffer));
+
+                            // Create a map to access the result based on label
+                            Map floatMap = labels.getMapWithFloatValue();
+
+                            //맵에 들어온 값 한번 확인해 보는 용도
+                            for(Object entry : floatMap.entrySet()) {
+                                System.out.println("map키 : "+ entry);
+                            }
+
+                            //가장 큰값 찾기
+                            HashMap <String, Float> result = new LinkedHashMap<>();
+                            for(Object entry : floatMap.entrySet()) {
+                                String[] s = entry.toString().split("=");
+                                result.put(s[0], Float.parseFloat(s[1])*100);
+                            }
+
+                            float max = 0.0F;
+                            for(Map.Entry<String, Float> entry : result.entrySet()) {
+                                if(entry.getValue() > max){
+                                    max = entry.getValue();
+                                }
+                            }
+
+                            //가장 큰 값만 분류 결과 화면에 넘길 수 있도록 key, value 저장
+                            for (Map.Entry<String, Float> entry : result.entrySet()) {
+                                if (entry.getValue().equals(max)) {
+                                    System.out.println("key : "+entry.getKey()+" value : "+entry.getValue());
+                                    key = entry.getKey();
+                                    value = entry.getValue();
+                                }
+                            }
+                        }
+
 
                         //결과 페이지로 넘어가기
-                        Intent intent = new Intent(getApplicationContext(), Classification.class);
-                        //테스트한 이미지 파일 넘기기
-                        intent.putExtra("testFile",testFile);
+                        Intent intent1 = new Intent(getApplicationContext(), Classification.class);
+                        intent1.putExtra("testUri",String.valueOf(imageUri));
                         //결괏값 넘기기
-                        intent.putExtra("resultKey", key);
-                        intent.putExtra("resultValue",value);
-                        startActivity(intent);
+                        intent1.putExtra("resultKey", key);
+                        intent1.putExtra("resultValue",value);
+                        startActivity(intent1);
                     }
 
                     //식별하기 버튼
-                    else if(modifyBtn.getText().equals("식별하기")){
+                    if (modifyBtn.getText().equals("식별하기")){
                         Intent intent = new Intent(getApplicationContext(), Classification.class);
                         startActivity(intent);
                     }
@@ -273,9 +256,51 @@ public class CompleteTag extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+
             }
+
+
+            //이미지 리사이즈
+            private Bitmap resize(Context context, Uri uri, int resize){
+                Bitmap resizeBitmap=null;
+
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                try {
+                    BitmapFactory.decodeStream(context.getContentResolver().openInputStream(uri), null, options); // 1번
+
+                    int width = options.outWidth;
+                    int height = options.outHeight;
+                    int samplesize = 1;
+
+                    while (true) {//2번
+                        if (width / 2 < resize || height / 2 < resize)
+                            break;
+                        width /= 2;
+                        height /= 2;
+                        samplesize *= 2;
+                    }
+
+                    options.inSampleSize = samplesize;
+                    Bitmap bitmap = BitmapFactory.decodeStream(context.getContentResolver().openInputStream(uri), null, options); //3번
+                    resizeBitmap=bitmap;
+
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                return resizeBitmap;
+            }
+
         });
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        imageUri = data.getData();
+        modifyBtn.setText("학습하기");
+    }
+
+
 
     //완료 해쉬맵 sharedPreperence에 저장
     public void SaveCompleteTagMap(Context context, HashMap<Uri, String> ctMap) throws IOException, JSONException {

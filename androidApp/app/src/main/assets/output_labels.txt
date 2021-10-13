@@ -1,6 +1,4 @@
-psoriasis
-dermatofibroma
-acne
-solar lentigo
-eczema
+Acne
 melanoma
+psoriasis
+wart

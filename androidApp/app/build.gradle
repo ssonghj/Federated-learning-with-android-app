@@ -46,9 +46,11 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation 'org.tensorflow:tensorflow-lite-task-vision:0.2.0'
+    implementation 'org.tensorflow:tensorflow-lite-task-text:0.1.0'
 
 
     //noinspection GradleCompatible
     implementation 'com.android.support:appcompat-v7:25.1.0'
+
 
 }

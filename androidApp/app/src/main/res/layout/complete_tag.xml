@@ -54,7 +54,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="@drawable/btn_round"
-            android:text="학습하기"
+            android:text="사진선택"
             android:textColor="@color/white" />
     </LinearLayout>
 

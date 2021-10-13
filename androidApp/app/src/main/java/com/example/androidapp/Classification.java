@@ -8,6 +8,7 @@ import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.Image;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.TextureView;
@@ -41,24 +42,27 @@ public class Classification extends AppCompatActivity {
                                                                     /////////////////////////////
         //이전 화면에서 값 가져오기
         Intent intent = getIntent();
-        String testImage = intent.getExtras().getString("testFile");
+//        String testImage = intent.getExtras().getString("testFile");
+        String testImage = intent.getStringExtra("testUri");
+        Uri uriImage = Uri.parse(testImage);
+
+
+
         String resultKey = intent.getExtras().getString("resultKey");
         float resultValue = intent.getExtras().getFloat("resultValue");
 
-        //이미지 뷰 선언 -> 일단 임시 방편
-        AssetManager am = getResources().getAssets() ;
-        try {
-            InputStream is = am.open(testImage) ;
-            Bitmap bm = BitmapFactory.decodeStream(is) ;
 
-            mImageView = findViewById(R.id.imageView);
-            mImageView.setImageBitmap(bm) ;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+        //앨범에서 가져온 이미지 뷰 선언 -> 일단 임시 방편
+        AssetManager am = getResources().getAssets() ;
+
+        mImageView = findViewById(R.id.imageView);
+        mImageView.setImageURI(uriImage);
+
 
         mtextView = findViewById(R.id.classificationTag);
         mtextView.setText(String.valueOf(resultKey)+" = "+String.valueOf(resultValue));
+
 
 
         //preview 객체 생성
