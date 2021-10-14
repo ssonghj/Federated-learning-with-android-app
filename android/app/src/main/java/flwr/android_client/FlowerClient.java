@@ -194,9 +194,11 @@ public class FlowerClient {
         String label = "";
         //이미지 uri에 따른 태그를 찾기
         for(Map.Entry<Uri, String> entry : cpMap.entrySet()) {
-            System.out.println("map키 : "+ entry.getKey()+" 값 : "+ entry.getValue());
-            if(entry.getKey().equals(path)){
+            Log.v("path", String.valueOf(entry.getKey()));
+            Log.v("path2",path);
+            if(entry.getKey().toString().equals(path)){
                 label = entry.getValue();
+                Log.v("label",label);
             }
         }
         return label;

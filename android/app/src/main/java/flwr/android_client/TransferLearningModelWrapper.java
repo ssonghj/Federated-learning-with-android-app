@@ -38,13 +38,20 @@ public class TransferLearningModelWrapper implements Closeable {
         model =
                 new TransferLearningModel(
                         new AssetModelLoader(context, "model"),
-                        Arrays.asList("acne","melanoma","psoriasis","wart")
+//                        Arrays.asList("acne","melanoma","psoriasis","wart")
+                        //추가함
+                        Arrays.asList("mobile_phone", "paper_notebook", "back_pack", "monitor",
+                                "psoriasis", "calculator", "desk_lamp", "laptop_computer", "speaker",
+                                "letter_tray", "acne", "trash_can", "printer", "stapler", "headphones",
+                                "punchers", "file_cabinet", "tape_dispenser", "wart", "pen_", "bookcase",
+                                "desk_chair", "desktop_computer", "ruler", "mug", "phone", "scissors",
+                                "ring_binder", "bike_helmet", "bottle", "melanoma")
 //                        Arrays.asList("mobile_phone", "paper_notebook", "back_pack", "monitor",
 //                                "projector", "calculator", "desk_lamp", "laptop_computer", "speaker",
 //                                "letter_tray", "bike", "trash_can", "printer", "stapler", "headphones",
 //                                "punchers", "file_cabinet", "tape_dispenser", "mouse", "pen", "bookcase",
 //                                "desk_chair", "desktop_computer", "ruler", "mug", "phone", "scissors",
-//                                "ring_binder", "bike_helmet", "bottle", "keyboard","")
+//                                "ring_binder", "bike_helmet", "bottle", "keyboard","acne","melanoma","psoriasis","wart")
 
                 );
         this.context = context;

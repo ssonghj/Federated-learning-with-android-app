@@ -250,6 +250,7 @@ public class FederatedLearning extends AppCompatActivity {
                             });
         }
 
+        //진행상태에 따른 메시지 출력
         private void handleMessage(ServerMessage message, FederatedLearning activity) {
 
             try {

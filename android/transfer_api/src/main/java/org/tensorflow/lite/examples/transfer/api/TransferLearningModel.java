@@ -269,6 +269,7 @@ public final class TransferLearningModel implements Closeable {
   public Future<Void> train(int numEpochs, LossConsumer lossConsumer) {
     checkNotTerminating();
 
+    //여기 넘어감
     if (trainingSamples.size() < getTrainBatchSize()) {
       throw new RuntimeException(
           String.format(
