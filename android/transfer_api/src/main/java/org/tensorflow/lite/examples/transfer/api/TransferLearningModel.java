@@ -97,6 +97,9 @@ public final class TransferLearningModel implements Closeable {
     void onLoss(int epoch, float loss);
   }
 
+  //추가
+  private static final int INT_BYTES = 4;
+
   private static final int FLOAT_BYTES = 4;
 
   // Setting this to a higher value allows to calculate bottlenecks for more samples while

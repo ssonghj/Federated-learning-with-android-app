@@ -88,14 +88,20 @@ public class FlowerClient {
             for(Map.Entry<Uri, String> entry : completeTagMap.entrySet()) {
                 System.out.println("map키 : "+ entry.getKey()+" 값 : "+ entry.getValue());
 
-                i++;
-                Log.e(TAG, i + "th training image loaded");
-                //학습할 이미지 추가
-                addSample(String.valueOf(entry.getKey()), true);
-
-                Log.e(TAG, i + "th test image loaded");
-                //테스트 샘플 추가
-                addSample(String.valueOf(entry.getKey()), false);
+                //20개는 학습
+                if(0 <= i && i <= 20){
+                    i++;
+                    Log.e(TAG, i + "th training image loaded");
+                    //학습할 이미지 추가
+                    addSample(String.valueOf(entry.getKey()), true);
+                }
+                //5개는 테스트
+                else{
+                    i++;
+                    Log.e(TAG, i + "th test image loaded");
+                    //테스트 샘플 추가
+                    addSample(String.valueOf(entry.getKey()), false);
+                }
             }
             //add sample에 이미지 저장해야함
 
@@ -139,6 +145,7 @@ public class FlowerClient {
 
     //이미지 추가
     private void addSample(String photoPath, Boolean isTraining) throws IOException {
+        //기존 모델에 변환해서 쓰는 것
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inPreferredConfig = Bitmap.Config.ARGB_8888;
         //photoPath 파라미터로 포토 위치 가져오기

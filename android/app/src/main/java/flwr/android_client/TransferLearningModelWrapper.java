@@ -38,20 +38,23 @@ public class TransferLearningModelWrapper implements Closeable {
         model =
                 new TransferLearningModel(
                         new AssetModelLoader(context, "model"),
-//                        Arrays.asList("acne","melanoma","psoriasis","wart")
-                        //추가함
-                        Arrays.asList("mobile_phone", "paper_notebook", "back_pack", "monitor",
-                                "psoriasis", "calculator", "desk_lamp", "laptop_computer", "speaker",
-                                "letter_tray", "acne", "trash_can", "printer", "stapler", "headphones",
-                                "punchers", "file_cabinet", "tape_dispenser", "wart", "pen_", "bookcase",
-                                "desk_chair", "desktop_computer", "ruler", "mug", "phone", "scissors",
-                                "ring_binder", "bike_helmet", "bottle", "melanoma")
+                        //4개 라벨
+                        //Arrays.asList("acne","melanoma","psoriasis","wart")
+
+                        //버퍼 맞추서 4개 추가함
 //                        Arrays.asList("mobile_phone", "paper_notebook", "back_pack", "monitor",
-//                                "projector", "calculator", "desk_lamp", "laptop_computer", "speaker",
-//                                "letter_tray", "bike", "trash_can", "printer", "stapler", "headphones",
-//                                "punchers", "file_cabinet", "tape_dispenser", "mouse", "pen", "bookcase",
+//                                "psoriasis", "calculator", "desk_lamp", "laptop_computer", "speaker",
+//                                "letter_tray", "acne", "trash_can", "printer", "stapler", "headphones",
+//                                "punchers", "file_cabinet", "tape_dispenser", "wart", "pen_", "bookcase",
 //                                "desk_chair", "desktop_computer", "ruler", "mug", "phone", "scissors",
-//                                "ring_binder", "bike_helmet", "bottle", "keyboard","acne","melanoma","psoriasis","wart")
+//                                "ring_binder", "bike_helmet", "bottle", "melanoma")
+                        //오리지널
+                        Arrays.asList("mobile_phone", "paper_notebook", "back_pack", "monitor",
+                                "projector", "calculator", "desk_lamp", "laptop_computer", "speaker",
+                                "letter_tray", "bike", "trash_can", "printer", "stapler", "headphones",
+                                "punchers", "file_cabinet", "tape_dispenser", "mouse", "pen", "bookcase",
+                                "desk_chair", "desktop_computer", "ruler", "mug", "phone", "scissors",
+                                "ring_binder", "bike_helmet", "bottle", "keyboard")
 
                 );
         this.context = context;
@@ -72,9 +75,14 @@ public class TransferLearningModelWrapper implements Closeable {
     }
 
     // This method is thread-safe.
+//    public Future<Void> addSample(float[] image, String className, Boolean isTraining) {
+//        return model.addSample(image, className, isTraining);
+//    }
     public Future<Void> addSample(float[] image, String className, Boolean isTraining) {
         return model.addSample(image, className, isTraining);
     }
+
+
 
     public Pair<Float, Float> calculateTestStatistics(){
         return model.getTestStatistics();

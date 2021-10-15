@@ -23,6 +23,7 @@ import java.nio.ByteBuffer;
  */
 class LiteBottleneckModel implements Closeable {
   private static final int FLOAT_BYTES = 4;
+  private static final int INT_BYTES = 4;
 
   private final LiteModelWrapper modelWrapper;
 

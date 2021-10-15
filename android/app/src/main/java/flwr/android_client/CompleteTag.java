@@ -164,6 +164,7 @@ public class CompleteTag extends AppCompatActivity {
                         Interpreter tflite = null;
 
                         //tf파일 받기
+                        tflite = getTfliteInterpreter("model/mobileNet_v2.tflite");
 
                         // Running inference
                         if(null != tflite) {

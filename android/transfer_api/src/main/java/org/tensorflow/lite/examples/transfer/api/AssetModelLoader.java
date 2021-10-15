@@ -46,6 +46,7 @@ public class AssetModelLoader implements ModelLoader {
 
   @Override
   public LiteModelWrapper loadBaseModel() throws IOException {
+    //return new LiteModelWrapper(loadMappedFile("mobileNet_v2.tflite"));
     return new LiteModelWrapper(loadMappedFile("bottleneck.tflite"));
   }
 
