@@ -39,6 +39,8 @@
 
         <activity android:name=".FederatedLearning">
         </activity>
+        <activity android:name=".fl2">
+        </activity>
 
         <meta-data
             android:name="com.google.firebase.ml.vision.DEPENDENCIES"

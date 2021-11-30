@@ -55,10 +55,7 @@ public class FederatedLearning extends AppCompatActivity {
 
     private int local_epochs = 10; //Hard coded. Need to be set based on server config.
 
-
     HashMap<Uri,String> completeTagMap;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,13 +90,14 @@ public class FederatedLearning extends AppCompatActivity {
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
-
+    //화면 출력
     public void setResultText(String text) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
         String time = dateFormat.format(new Date());
         resultText.append("\n" + time + "   " + text);
     }
 
+    //데이터 가져오기
     public void loadData(View view){
         //load data 버튼 눌렀을 때 내 해시맵의 이미지와 태그값이 들어가야만 함.
         //굳이 editText 필요없음 그냥 버튼만 누르면 되게 하기
@@ -154,7 +152,7 @@ public class FederatedLearning extends AppCompatActivity {
 //            }, 1000);
 //        }
     }
-
+    //서버와 연결하기 -> 채녈 만들기
     public void connect(View view) {
         String host = ip.getText().toString();
         String portStr = port.getText().toString();
@@ -171,6 +169,7 @@ public class FederatedLearning extends AppCompatActivity {
         }
     }
 
+    //run federated 누르면 연결 시작
     public void runGRCP(View view){
         new GrpcTask(new FlowerServiceRunnable(), channel, this).execute();
     }
@@ -267,7 +266,8 @@ public class FederatedLearning extends AppCompatActivity {
 
                     weights = activity.fc.getWeights();
                     c = weightsAsProto(weights);
-                } else if (message.hasFitIns()) {
+                }
+                else if (message.hasFitIns()) {
                     Log.e(TAG, "Handling FitIns");
                     activity.setResultText("Handling FitIns");
 
@@ -278,7 +278,8 @@ public class FederatedLearning extends AppCompatActivity {
                     }
                     Pair<ByteBuffer[], Integer> outputs = activity.fc.fit(newWeights);
                     c = fitResAsProto(outputs.first, outputs.second);
-                } else if (message.hasEvaluateIns()) {
+                }
+                else if (message.hasEvaluateIns()) {
                     Log.e(TAG, "Handling EvaluateIns");
                     activity.setResultText("Handling EvaluateIns");
 

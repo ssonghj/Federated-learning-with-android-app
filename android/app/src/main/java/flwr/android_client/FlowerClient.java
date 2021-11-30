@@ -15,6 +15,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.ByteBuffer;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -34,12 +35,14 @@ public class FlowerClient {
     HashMap<Uri, String> cpMap = new LinkedHashMap<>();
 
     public FlowerClient(Context context) {
+
         this.tlModel = new TransferLearningModelWrapper(context);
         this.context = context;
     }
 
     //가중치 가져오기
     public ByteBuffer[] getWeights() {
+        Log.v("weights", Arrays.stream(tlModel.getParameters()).iterator().toString());
         return tlModel.getParameters();
     }
 
@@ -53,6 +56,7 @@ public class FlowerClient {
         Log.e(TAG ,  "Training enabled");
         isTraining.block();
         return Pair.create(getWeights(), tlModel.getSize_Training());
+
     }
 
     //평가

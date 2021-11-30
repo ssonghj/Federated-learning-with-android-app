@@ -15,7 +15,9 @@
         <entry key="app/src/main/res/layout/classification.xml" value="0.325" />
         <entry key="app/src/main/res/layout/complete_tag.xml" value="0.325" />
         <entry key="app/src/main/res/layout/custom_listview.xml" value="0.325" />
-        <entry key="app/src/main/res/layout/federated_learning.xml" value="0.325" />
+        <entry key="app/src/main/res/layout/fd2.xml" value="0.17426545086119555" />
+        <entry key="app/src/main/res/layout/federated_learning.xml" value="0.19943019943019943" />
+        <entry key="app/src/main/res/layout/fl2.xml" value="0.1" />
       </map>
     </option>
   </component>

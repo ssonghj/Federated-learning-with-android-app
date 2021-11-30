@@ -37,6 +37,7 @@ class LiteBottleneckModel implements Closeable {
    * @param outBottleneck where to store the bottleneck. A new buffer is allocated if null.
    * @return bottleneck data. This is either [outBottleneck], or a newly allocated buffer.
    */
+
   synchronized ByteBuffer generateBottleneck(ByteBuffer image, ByteBuffer outBottleneck) {
     if (outBottleneck == null) {
       outBottleneck = ByteBuffer.allocateDirect(getNumBottleneckFeatures() * FLOAT_BYTES);

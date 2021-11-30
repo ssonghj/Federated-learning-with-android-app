@@ -1,5 +1,6 @@
 package flwr.android_client;
 
+import static org.tensorflow.lite.DataType.FLOAT32;
 import static org.tensorflow.lite.DataType.UINT8;
 
 import android.app.Activity;//
@@ -28,6 +29,7 @@ import org.tensorflow.lite.DataType;
 import org.tensorflow.lite.Interpreter;
 import org.tensorflow.lite.support.common.FileUtil;
 import org.tensorflow.lite.support.common.TensorProcessor;
+import org.tensorflow.lite.support.common.ops.DequantizeOp;
 import org.tensorflow.lite.support.common.ops.NormalizeOp;
 import org.tensorflow.lite.support.image.ImageProcessor;
 import org.tensorflow.lite.support.image.TensorImage;
@@ -113,7 +115,9 @@ public class CompleteTag extends AppCompatActivity {
         start_FL_Btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Intent intent1 = new Intent(getApplicationContext(), FederatedLearning.class);
+                //Intent intent1 = new Intent(getApplicationContext(), fl2.class);
                 intent1.putExtra("completeTagMap", completeTagMap);
                 startActivity(intent1);
             }
@@ -149,9 +153,11 @@ public class CompleteTag extends AppCompatActivity {
                         //이미지 전처리
                         ImageProcessor imageProcessor =
                                 new ImageProcessor.Builder()
-                                        .add(new ResizeOp(224, 224, ResizeOp.ResizeMethod.BILINEAR))
+                                        .add(new ResizeOp(224  , 224, ResizeOp.ResizeMethod.BILINEAR))
                                         .build();
-                        TensorImage tImage = new TensorImage(DataType.UINT8);
+
+
+                        TensorImage tImage = new TensorImage(FLOAT32);
                         tImage.load(bitmap);
 
                         tImage = imageProcessor.process(tImage);
@@ -160,19 +166,29 @@ public class CompleteTag extends AppCompatActivity {
                         TensorBuffer probabilityBuffer =
                                 TensorBuffer.createFixedSize(new int[]{1,4}, UINT8);
 
+
+
                         // Initialise the model
                         Interpreter tflite = null;
 
                         //tf파일 받기
-                        tflite = getTfliteInterpreter("model/mobileNet_v2.tflite");
+                        //tflite = getTfliteInterpreter("model/mobileNet_v2.tflite");
+                        tflite = getTfliteInterpreter("model/mobileNetv2_uint8.tflite");
+
 
                         // Running inference
                         if(null != tflite) {
                             System.out.println("학습시작");
+                            //기존
                             tflite.run(tImage.getBuffer(), probabilityBuffer.getBuffer());
+                            //float일때
+//                            tflite.run(input, output);
                             System.out.println("학습 끝");
                         }
 
+//                        for(int i = 0 ; i< 4; i++){
+//                            System.out.println("???? : " + output[0][i]);
+//                        }
 
                         final String ASSOCIATED_AXIS_LABELS = "output_labels.txt";
                         List associatedAxisLabels = null;
@@ -184,12 +200,11 @@ public class CompleteTag extends AppCompatActivity {
                         }
 
                         TensorProcessor probabilityProcessor =
-                                new TensorProcessor.Builder().add(new NormalizeOp(0, 255)).build();
+                                new TensorProcessor.Builder().add(new NormalizeOp(0, 255.0f)).build();
 
                         if (null != associatedAxisLabels) {
                             // Map of labels and their corresponding probability
-                            TensorLabel labels = new TensorLabel(associatedAxisLabels,
-                                    probabilityProcessor.process(probabilityBuffer));
+                            TensorLabel labels = new TensorLabel(associatedAxisLabels, probabilityProcessor.process(probabilityBuffer));
 
                             // Create a map to access the result based on label
                             Map floatMap = labels.getMapWithFloatValue();
