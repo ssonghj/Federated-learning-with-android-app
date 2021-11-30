@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="Gradle: org.tensorflow:tensorflow-lite-task-vision:0.2.0@aar">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/b4247e6a35f79c595874a4196a173879/jetified-tensorflow-lite-task-vision-0.2.0/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/2e47030bbfac20b1a4b3c423f02ea9c3/jetified-tensorflow-lite-task-vision-0.2.0/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/9e7921ba641f858263ae7d6241111951/jetified-tensorflow-lite-task-vision-0.2.0/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/72e04954a270b07561c99c2c1aba2a8f/jetified-tensorflow-lite-task-vision-0.2.0/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/72e04954a270b07561c99c2c1aba2a8f/jetified-tensorflow-lite-task-vision-0.2.0/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/72e04954a270b07561c99c2c1aba2a8f/jetified-tensorflow-lite-task-vision-0.2.0/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/dialog"
+    android:background="@drawable/dialog_background_round"
+    android:layout_gravity="center"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="322dp"
+    android:layout_height="230dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#000"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            android:text="현재 기기 상태"/>
+        <TextView
+            android:id="@+id/networkStatus"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:text="네트워크 상태 : "
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"/>
+        <TextView
+            android:id="@+id/batteryStatus"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:text="배터리 상태 : "
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"/>
+        <TextView
+            android:id="@+id/chargeStatus"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:text="배터리 충전 상태 : "
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"/>
+        <TextView
+            android:id="@+id/temperatureStatus"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:text="핸드폰 현재 온도 상태 : "
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"/>
+
+        <Switch
+            android:id="@+id/autoOnbtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:text="학습 자동 참여"></Switch>
+
+        <Button
+            android:text="확인"
+            android:textSize="10dp"
+            android:id="@+id/okBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
+</LinearLayout>

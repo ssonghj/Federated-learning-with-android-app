@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="false">
+        <layer-list>
+            <!-- SHADOW -->
+            <item>
+                <shape>
+                    <solid android:color="#fffafa"/>
+                    <!-- alttan gölge -->
+                    <corners android:topLeftRadius="85dp"
+                        android:topRightRadius="85dp"
+                        />
+                </shape>
+            </item>
+            <!-- BUTTON alttan gölge
+              android:right="5px" to make it round-->
+        </layer-list>
+    </item>
+
+</selector>

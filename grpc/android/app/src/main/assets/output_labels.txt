@@ -1,0 +1,4 @@
+acne
+melanoma
+psoriasis
+wart

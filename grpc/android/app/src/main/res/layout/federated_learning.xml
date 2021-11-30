@@ -1,0 +1,222 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:orientation="vertical"
+    android:background="#efecec"
+    tools:context=".FederatedLearning">
+
+    <RelativeLayout
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <ImageButton
+            android:id="@+id/backBtn"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:scaleType="fitXY"
+            android:background="#efecec"
+            android:src="@drawable/left"
+            ></ImageButton>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="연합 학습"
+            android:textSize="25dp"
+            android:textColor="#000000"
+            android:textAlignment="center"></TextView>
+
+        <ImageButton
+            android:id="@+id/infoBtn"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="#efecec"
+            android:scaleType="fitXY"
+            android:src="@drawable/info"></ImageButton>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_below="@id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"/>
+
+
+    <EditText
+        android:id="@+id/serverIP"
+        android:layout_below="@id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:ems="10"
+        android:hint="FL Server IP"
+        android:text="192.168.1.13"
+        android:inputType="phone" />
+
+
+    <EditText
+        android:layout_below="@id/serverIP"
+        android:id="@+id/serverPort"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:ems="10"
+        android:hint="FL Server Port"
+        android:text="3306"
+        android:inputType="numberDecimal" />
+
+    <LinearLayout
+        android:id="@+id/btnGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/serverPort"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/load_data"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/serverPort"
+            android:layout_gravity="center"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="7dp"
+            android:layout_marginRight="50dp"
+            android:layout_marginBottom="7dp"
+            android:background="@drawable/btn_round"
+            android:onClick="loadData"
+            android:text="1. 사진 불러오기" />
+
+        <Button
+            android:id="@+id/connect"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/load_data"
+            android:layout_gravity="center"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="7dp"
+            android:layout_marginRight="50dp"
+            android:layout_marginBottom="7dp"
+            android:background="@drawable/btn_round"
+            android:enabled="false"
+            android:onClick="connect"
+            android:text="2. 서버랑 연결하기" />
+
+        <Button
+            android:id="@+id/runFederated"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/connect"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="7dp"
+            android:layout_marginRight="50dp"
+            android:layout_marginBottom="7dp"
+            android:background="@drawable/btn_round"
+            android:enabled="false"
+            android:onClick="runGRCP"
+            android:text="3. 연합 학습 시작!" />
+
+    </LinearLayout>
+
+
+
+    <!--    -->
+    <!--    -->
+    <!--    <Button-->
+    <!--        android:id="@+id/GetInformation"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_gravity="center"-->
+    <!--        android:layout_margin="5sp"-->
+    <!--        android:backgroundTint="#9DE1EA"-->
+    <!--        android:enabled="false"-->
+    <!--        android:onClick="runGRCP"-->
+    <!--        android:text="GetInformation" />-->
+
+    <!--    <Button-->
+    <!--        android:id="@+id/GetModel"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_gravity="center"-->
+    <!--        android:layout_margin="5sp"-->
+    <!--        android:backgroundTint="#9DE1EA"-->
+    <!--        android:enabled="false"-->
+    <!--        android:onClick="runGRCP"-->
+    <!--        android:text="GetModel" />-->
+
+
+    <!--    <Button-->
+    <!--        android:id="@+id/PushTrainResult"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_gravity="center"-->
+    <!--        android:layout_margin="5sp"-->
+    <!--        android:backgroundTint="#9DE1EA"-->
+    <!--        android:enabled="false"-->
+    <!--        android:onClick="runGRCP"-->
+    <!--        android:text="PushTrainResult" />-->
+
+    <!--    <Button-->
+    <!--        android:id="@+id/GetStatus"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_gravity="center"-->
+    <!--        android:layout_margin="5sp"-->
+    <!--        android:backgroundTint="#9DE1EA"-->
+    <!--        android:enabled="false"-->
+    <!--        android:onClick="runGRCP"-->
+    <!--        android:text="GetStatus" />-->
+
+    <!--    <Button-->
+    <!--        android:id="@+id/PushControl"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_gravity="center"-->
+    <!--        android:layout_margin="5sp"-->
+    <!--        android:backgroundTint="#9DE1EA"-->
+    <!--        android:enabled="false"-->
+    <!--        android:onClick="runGRCP"-->
+    <!--        android:text="PushControl" />-->
+
+    <TextView
+        android:id="@+id/textview"
+        android:layout_below="@id/btnGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="25sp"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:text="[ 현재 진행 상태 ]"
+        android:textAlignment="center"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/grpc_response_text"
+        android:layout_width="match_parent"
+        android:layout_height="179dp"
+        android:layout_below="@id/textview"
+        android:layout_alignParentBottom="true"
+        android:background="#FAF2F2"
+        android:gravity="bottom"
+        android:nestedScrollingEnabled="true"
+        android:overScrollMode="always"
+        android:scrollbarAlwaysDrawHorizontalTrack="false"
+        android:scrollbars="vertical"
+        android:text="Welcome to Federated! \n"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textSize="12sp"
+        android:verticalScrollbarPosition="defaultPosition" />
+
+</RelativeLayout>
