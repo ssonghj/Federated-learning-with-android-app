@@ -13,15 +13,17 @@
         <entry key="app/src/main/res/drawable/linear_round.xml" value="0.3416666666666667" />
         <entry key="app/src/main/res/drawable/result.xml" value="0.2935185185185185" />
         <entry key="app/src/main/res/drawable/round.xml" value="0.3364102564102564" />
+        <entry key="app/src/main/res/layout-sw600dp/complete_tag.xml" value="0.242578125" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.33" />
         <entry key="app/src/main/res/layout/btn_round.xml" value="0.15830800405268491" />
         <entry key="app/src/main/res/layout/classification.xml" value="0.325" />
-        <entry key="app/src/main/res/layout/complete_tag.xml" value="0.325" />
+        <entry key="app/src/main/res/layout/complete_tag.xml" value="0.1" />
         <entry key="app/src/main/res/layout/custom_dialog.xml" value="0.4048964218455744" />
         <entry key="app/src/main/res/layout/custom_listview.xml" value="0.325" />
         <entry key="app/src/main/res/layout/fd2.xml" value="0.17426545086119555" />
         <entry key="app/src/main/res/layout/federated_learning.xml" value="0.19943019943019943" />
         <entry key="app/src/main/res/layout/fl2.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/splash.xml" value="0.22" />
       </map>
     </option>
   </component>

@@ -1,6 +1,5 @@
 package flwr.android_client;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -14,8 +13,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;//
-import androidx.core.app.ActivityCompat;
+import androidx.appcompat.app.AppCompatActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -42,13 +40,14 @@ public class MainActivity extends AppCompatActivity {
     //태그 완료 해쉬맵
     HashMap<Uri, String> completeTagMap = new LinkedHashMap<>();
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MODE_PRIVATE);
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, MODE_PRIVATE);
+//        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MODE_PRIVATE);
+//        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, MODE_PRIVATE);
 
         //처음들어왔을때 한번만 저장된 completeMap 로드하기
         if(countOfSharedpreference == 0){
@@ -138,6 +137,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+
+
 
     void showDialogForGoToCompletetagPage() {
         AlertDialog.Builder msgBuilder = new AlertDialog.Builder(

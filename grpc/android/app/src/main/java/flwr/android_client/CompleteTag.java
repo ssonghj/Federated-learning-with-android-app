@@ -47,6 +47,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import flwr.android_client.FL.FederatedLearning;
+
 
 public class CompleteTag extends AppCompatActivity {
     SharedPreferences mmPref;

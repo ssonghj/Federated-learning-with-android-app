@@ -39,7 +39,7 @@ message InformationReply {
     }
     repeated Model models = 1;
 }
-// grpc 스트림이 필요한 건지 시도해보고 계속 적용중,..논문 수정 및 교수님께 검사 맡는 중
+
 message ModelRequest {
     string name = 1;
     string version = 2;
